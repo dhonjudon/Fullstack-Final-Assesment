@@ -32,7 +32,7 @@ foreach ($items as $item) {
                 <strong><?= sanitize($item['name']) ?></strong>
                 <div class="price">रु <?= number_format($item['price'], 2) ?></div>
                 <div class="desc"><?= sanitize($item['description']) ?></div>
-                <a href="cart.php?add=<?= $item['id'] ?>" class="button">Add to Cart</a>
+                <button type="button" class="button add-to-cart-btn" data-item-id="<?= $item['id'] ?>">Add to Cart</button>
             </div>
         <?php endforeach; ?>
     </div>

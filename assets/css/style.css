@@ -1131,50 +1131,55 @@ form input[type="checkbox"] + label {
 
 /* Quantity Controls */
 .quantity-controls {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
-  background: #f5e6d3;
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #d4a574;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #f5e6d3 0%, #efe0cf 100%);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #d4a574;
+  box-shadow: 0 3px 8px rgba(93, 64, 55, 0.12);
 }
 
 .qty-btn {
-  background: #d4a574;
+  background: linear-gradient(135deg, #d4a574 0%, #c49464 100%);
   color: #fff;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
-  box-shadow: 0 2px 4px rgba(93, 64, 55, 0.15);
+  box-shadow: 0 2px 5px rgba(93, 64, 55, 0.2);
+  padding: 0;
+  line-height: 1;
 }
 
 .qty-btn:hover {
-  background: #5d4037;
-  transform: scale(1.1);
-  box-shadow: 0 3px 6px rgba(93, 64, 55, 0.25);
+  background: linear-gradient(135deg, #c49464 0%, #b58454 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(93, 64, 55, 0.3);
 }
 
 .qty-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(93, 64, 55, 0.2);
 }
 
 .qty-value {
   min-width: 50px;
   text-align: center;
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: 600;
+  font-size: 1.3rem;
   color: #5d4037;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 500px) {

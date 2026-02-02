@@ -14,7 +14,7 @@
         <nav>
             <a href="menu.php">Menu</a>
             <?php if (empty($_SESSION['admin_logged_in'])): ?>
-                <a href="cart.php">Cart</a>
+                <a href="cart.php" class="cart-link">Cart <span class="cart-count" id="cartCount"></span></a>
             <?php else: ?>
                 | <a href="index.php">Admin Home</a>
                 | <a href="orders.php">Orders</a>
