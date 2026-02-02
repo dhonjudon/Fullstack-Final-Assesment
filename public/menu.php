@@ -1,4 +1,8 @@
 <?php
+// menu.php: Public menu page
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 require_once '../includes/functions.php';
 include '../includes/header.php';
