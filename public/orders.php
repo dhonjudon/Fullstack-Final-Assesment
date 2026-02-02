@@ -19,19 +19,97 @@ if (isset($_GET['update_status'])) {
     exit;
 }
 
+// Handle daily reset
+if (isset($_GET['reset_daily']) && $_GET['reset_daily'] === 'confirm') {
+    try {
+        $pdo->beginTransaction();
+
+        // Calculate today's totals
+        $today_stats = $pdo->query("SELECT COUNT(*) as orders, SUM(total) as revenue FROM orders")->fetch();
+
+        // Archive all orders to archived_orders
+        $orders_to_archive = $pdo->query("SELECT * FROM orders")->fetchAll();
+        foreach ($orders_to_archive as $order) {
+            $stmt = $pdo->prepare("INSERT INTO archived_orders (original_order_id, customer_name, customer_phone, total, status, order_date) 
+                                   VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $order['id'],
+                $order['customer_name'],
+                $order['customer_phone'],
+                $order['total'],
+                $order['status'],
+                $order['created_at']
+            ]);
+
+            $archived_id = $pdo->lastInsertId();
+
+            // Archive order items
+            $items = $pdo->prepare("SELECT oi.*, mi.name FROM order_items oi 
+                                   LEFT JOIN menu_items mi ON oi.menu_item_id = mi.id 
+                                   WHERE oi.order_id = ?");
+            $items->execute([$order['id']]);
+            foreach ($items->fetchAll() as $item) {
+                $stmt = $pdo->prepare("INSERT INTO archived_order_items (archived_order_id, menu_item_name, quantity, price) 
+                                      VALUES (?, ?, ?, ?)");
+                $stmt->execute([$archived_id, $item['name'], $item['quantity'], $item['price']]);
+            }
+        }
+
+        // Log revenue for today
+        $stmt = $pdo->prepare("INSERT INTO revenue_logs (log_date, total_orders, total_revenue) 
+                              VALUES (CURDATE(), ?, ?) 
+                              ON DUPLICATE KEY UPDATE 
+                              total_orders = total_orders + ?, 
+                              total_revenue = total_revenue + ?");
+        $stmt->execute([
+            $today_stats['orders'],
+            $today_stats['revenue'],
+            $today_stats['orders'],
+            $today_stats['revenue']
+        ]);
+
+        // Clear current orders and order_items
+        $pdo->exec("DELETE FROM order_items");
+        $pdo->exec("DELETE FROM orders");
+
+        $pdo->commit();
+        $_SESSION['reset_message'] = "Daily orders reset successfully! Revenue logged.";
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        $_SESSION['reset_error'] = "Error resetting orders: " . $e->getMessage();
+    }
+    header('Location: orders.php');
+    exit;
+}
+
+// Handle status update
+if (isset($_GET['update_status'])) {
+    $order_id = intval($_GET['update_status']);
+    $new_status = isset($_GET['status']) ? sanitize($_GET['status']) : 'pending';
+
+    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->execute([$new_status, $order_id]);
+    header('Location: orders.php');
+    exit;
+}
+
 // Get summary statistics
 $total_revenue = $pdo->query("SELECT SUM(total) as revenue FROM orders")->fetch()['revenue'] ?? 0;
 $total_orders = $pdo->query("SELECT COUNT(*) as count FROM orders")->fetch()['count'] ?? 0;
 $pending_orders = $pdo->query("SELECT COUNT(*) as count FROM orders WHERE status = 'pending'")->fetch()['count'] ?? 0;
 $completed_orders = $pdo->query("SELECT COUNT(*) as count FROM orders WHERE status = 'done'")->fetch()['count'] ?? 0;
 
-// Fetch all orders with their items
-$stmt = $pdo->query("SELECT * FROM orders ORDER BY created_at DESC");
-$orders = $stmt->fetchAll();
+// Fetch pending and completed orders separately
+$stmt_pending = $pdo->query("SELECT * FROM orders WHERE status = 'pending' ORDER BY id ASC");
+$pending = $stmt_pending->fetchAll();
+
+$stmt_completed = $pdo->query("SELECT * FROM orders WHERE status = 'done' ORDER BY id ASC");
+$completed = $stmt_completed->fetchAll();
 
 // Fetch order items for display
 $order_items = [];
-foreach ($orders as $order) {
+$all_orders = array_merge($pending, $completed);
+foreach ($all_orders as $order) {
     $stmt = $pdo->prepare("SELECT oi.*, mi.name FROM order_items oi 
                            LEFT JOIN menu_items mi ON oi.menu_item_id = mi.id 
                            WHERE oi.order_id = ?");
@@ -41,6 +119,19 @@ foreach ($orders as $order) {
 ?>
 
 <h2>Orders Management</h2>
+
+<?php if (isset($_SESSION['reset_message'])): ?>
+    <div class="alert alert-success">
+        <?= $_SESSION['reset_message'] ?>
+        <a href="revenue.php" class="button button-small">View Revenue Reports</a>
+    </div>
+    <?php unset($_SESSION['reset_message']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['reset_error'])): ?>
+    <div class="alert alert-error"><?= $_SESSION['reset_error'] ?></div>
+    <?php unset($_SESSION['reset_error']); ?>
+<?php endif; ?>
 
 <!-- Revenue Summary -->
 <div class="summary-cards">
@@ -62,50 +153,152 @@ foreach ($orders as $order) {
     </div>
 </div>
 
-<!-- Orders List -->
-<?php if ($orders): ?>
-    <div class="orders-container">
-        <?php foreach ($orders as $order): ?>
-            <div class="order-card">
-                <div class="order-header">
-                    <div>
-                        <h3>Order #<?= $order['id'] ?></h3>
-                        <p class="order-customer"><strong>Customer:</strong> <?= sanitize($order['customer_name']) ?></p>
-                        <p class="order-phone"><strong>Phone:</strong> <?= sanitize($order['customer_phone'] ?? 'N/A') ?></p>
+<div class="orders-actions-bar">
+    <a href="revenue.php" class="button button-secondary">View Revenue Reports</a>
+    <?php if ($total_orders > 0): ?>
+        <a href="#"
+            onclick="if(confirm('Reset all orders for today? This will archive orders and log revenue. This cannot be undone!')) { window.location.href='orders.php?reset_daily=confirm'; } return false;"
+            class="button button-danger">Reset Daily Orders</a>
+    <?php endif; ?>
+</div>
+
+<!-- Pending Orders Section -->
+<?php if ($pending): ?>
+    <h3 class="section-title pending-section">⏳ Pending Orders (<?= count($pending) ?>)</h3>
+    <div class="orders-list">
+        <div class="orders-header">
+            <div class="col-order">Order ID</div>
+            <div class="col-customer">Customer</div>
+            <div class="col-phone">Phone</div>
+            <div class="col-items">Items</div>
+            <div class="col-total">Total</div>
+            <div class="col-status">Status</div>
+            <div class="col-action"></div>
+        </div>
+
+        <?php foreach ($pending as $order): ?>
+            <div class="order-row">
+                <div class="order-row-main" onclick="toggleOrderDetails(this)">
+                    <div class="col-order">#<?= $order['id'] ?></div>
+                    <div class="col-customer"><?= sanitize($order['customer_name']) ?></div>
+                    <div class="col-phone"><?= sanitize($order['customer_phone'] ?? 'N/A') ?></div>
+                    <div class="col-items"><?= count($order_items[$order['id']] ?? []) ?> item(s)</div>
+                    <div class="col-total">रु <?= number_format($order['total'], 2) ?></div>
+                    <div class="col-status">
+                        <span class="status-badge status-<?= $order['status'] ?>">
+                            <?= ucfirst(sanitize($order['status'])) ?>
+                        </span>
                     </div>
-                    <div class="order-meta">
-                        <p><strong>Date:</strong> <?= date('M d, Y h:i A', strtotime($order['created_at'])) ?></p>
-                        <p><strong>Total:</strong> रु <?= number_format($order['total'], 2) ?></p>
+                    <div class="col-action">
+                        <span class="expand-icon">▼</span>
                     </div>
                 </div>
 
-                <div class="order-items">
-                    <h4>Items:</h4>
-                    <ul>
-                        <?php foreach ($order_items[$order['id']] ?? [] as $item): ?>
-                            <li>
-                                <?= sanitize($item['name'] ?? 'Unknown Item') ?>
-                                x <?= $item['quantity'] ?>
-                                @ रु <?= number_format($item['price'], 2) ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                <div class="order-details">
+                    <div class="details-content">
+                        <div class="details-section">
+                            <h4>Order Details</h4>
+                            <div class="detail-row">
+                                <span>Date & Time:</span>
+                                <span><?= date('M d, Y h:i A', strtotime($order['created_at'])) ?></span>
+                            </div>
+                        </div>
 
-                <div class="order-status">
-                    <span class="status-badge status-<?= $order['status'] ?>">
-                        <?= ucfirst(sanitize($order['status'])) ?>
-                    </span>
-                    <?php if ($order['status'] === 'pending'): ?>
-                        <a href="orders.php?update_status=<?= $order['id'] ?>&status=done" class="button button-small">Mark Done</a>
-                    <?php else: ?>
-                        <a href="orders.php?update_status=<?= $order['id'] ?>&status=pending" class="button button-small">Reopen</a>
-                    <?php endif; ?>
+                        <div class="details-section">
+                            <h4>Items Ordered</h4>
+                            <div class="items-table">
+                                <?php foreach ($order_items[$order['id']] ?? [] as $item): ?>
+                                    <div class="item-row">
+                                        <span class="item-name"><?= sanitize($item['name'] ?? 'Unknown Item') ?></span>
+                                        <span class="item-qty">x<?= $item['quantity'] ?></span>
+                                        <span class="item-price">रु <?= number_format($item['price'], 2) ?></span>
+                                        <span class="item-subtotal">रु
+                                            <?= number_format($item['quantity'] * $item['price'], 2) ?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="details-actions">
+                            <a href="orders.php?update_status=<?= $order['id'] ?>&status=done" class="button button-success">✓
+                                Mark as Done</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
-<?php else: ?>
+<?php endif; ?>
+
+<!-- Completed Orders Section -->
+<?php if ($completed): ?>
+    <h3 class="section-title completed-section">✓ Completed Orders (<?= count($completed) ?>)</h3>
+    <div class="orders-list orders-list-completed">
+        <div class="orders-header">
+            <div class="col-order">Order ID</div>
+            <div class="col-customer">Customer</div>
+            <div class="col-phone">Phone</div>
+            <div class="col-items">Items</div>
+            <div class="col-total">Total</div>
+            <div class="col-status">Status</div>
+            <div class="col-action"></div>
+        </div>
+
+        <?php foreach ($completed as $order): ?>
+            <div class="order-row">
+                <div class="order-row-main" onclick="toggleOrderDetails(this)">
+                    <div class="col-order">#<?= $order['id'] ?></div>
+                    <div class="col-customer"><?= sanitize($order['customer_name']) ?></div>
+                    <div class="col-phone"><?= sanitize($order['customer_phone'] ?? 'N/A') ?></div>
+                    <div class="col-items"><?= count($order_items[$order['id']] ?? []) ?> item(s)</div>
+                    <div class="col-total">रु <?= number_format($order['total'], 2) ?></div>
+                    <div class="col-status">
+                        <span class="status-badge status-<?= $order['status'] ?>">
+                            <?= ucfirst(sanitize($order['status'])) ?>
+                        </span>
+                    </div>
+                    <div class="col-action">
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+
+                <div class="order-details">
+                    <div class="details-content">
+                        <div class="details-section">
+                            <h4>Order Details</h4>
+                            <div class="detail-row">
+                                <span>Date & Time:</span>
+                                <span><?= date('M d, Y h:i A', strtotime($order['created_at'])) ?></span>
+                            </div>
+                        </div>
+
+                        <div class="details-section">
+                            <h4>Items Ordered</h4>
+                            <div class="items-table">
+                                <?php foreach ($order_items[$order['id']] ?? [] as $item): ?>
+                                    <div class="item-row">
+                                        <span class="item-name"><?= sanitize($item['name'] ?? 'Unknown Item') ?></span>
+                                        <span class="item-qty">x<?= $item['quantity'] ?></span>
+                                        <span class="item-price">रु <?= number_format($item['price'], 2) ?></span>
+                                        <span class="item-subtotal">रु
+                                            <?= number_format($item['quantity'] * $item['price'], 2) ?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="details-actions">
+                            <a href="orders.php?update_status=<?= $order['id'] ?>&status=pending"
+                                class="button button-secondary">↻ Reopen Order</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (!$pending && !$completed): ?>
     <div class="empty-state">
         <p>No orders yet. When customers place orders, they will appear here.</p>
     </div>

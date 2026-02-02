@@ -46,7 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <h2>Checkout</h2>
 <?php if ($success): ?>
-    <p>Thank you for your order!</p>
+    <div class="success-message">
+        <div class="success-icon">✓</div>
+        <h3>Order Placed Successfully!</h3>
+        <p>Thank you for your order. Your order has been received and is being prepared.</p>
+        <div class="success-actions">
+            <a href="menu.php" class="button button-large">Order More</a>
+            <a href="menu.php" class="button button-secondary">Back to Menu</a>
+        </div>
+    </div>
 <?php else: ?>
     <?php if ($errors): ?><ul style="color:red;"><?php foreach ($errors as $e) echo "<li>$e</li>"; ?></ul><?php endif; ?>
     <form method="post" action="">

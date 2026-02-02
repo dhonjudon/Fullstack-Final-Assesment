@@ -17,8 +17,8 @@
                 <a href="cart.php">Cart</a>
             <?php else: ?>
                 | <a href="index.php">Admin Home</a>
-                | <a href="add.php">Add Item</a>
                 | <a href="orders.php">Orders</a>
+                | <a href="revenue.php">Revenue</a>
                 | <a href="search.php">Search</a>
                 | <a href="categories.php">Categories</a>
                 | <a href="logout.php">Logout</a>

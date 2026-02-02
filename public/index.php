@@ -37,7 +37,8 @@ $items = $stmt->fetchAll();
                 </td>
                 <td>
                     <a href="edit.php?id=<?= $item['id'] ?>" class="button">Edit</a>
-                    <a href="#" class="button button-danger" onclick="openDeleteModal(<?= $item['id'] ?>, '<?= htmlspecialchars(sanitize($item['name'])) ?>'); return false;">Delete</a>
+                    <a href="#" class="button button-danger"
+                        onclick="openDeleteModal(<?= $item['id'] ?>, '<?= htmlspecialchars(sanitize($item['name'])) ?>'); return false;">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>

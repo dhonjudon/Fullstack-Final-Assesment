@@ -10,6 +10,13 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+// Handle clear cart
+if (isset($_GET['clear'])) {
+    $_SESSION['cart'] = [];
+    header('Location: cart.php');
+    exit;
+}
+
 // Handle add/remove actions
 if (isset($_GET['add'])) {
     $id = intval($_GET['add']);
@@ -49,18 +56,36 @@ if ($cart) {
     </div>
 <?php else: ?>
     <table class="table">
-        <tr><th>Name</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>
-        <?php foreach ($items as $item): ?>
         <tr>
-            <td><?= sanitize($item['name']) ?></td>
-            <td>रु <?= number_format($item['price'],2) ?></td>
-            <td><?= $item['quantity'] ?></td>
-            <td>रु <?= number_format($item['subtotal'],2) ?></td>
-            <td><a href="cart.php?remove=<?= $item['id'] ?>" class="button">Remove</a></td>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Subtotal</th>
+            <th>Action</th>
         </tr>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td><?= sanitize($item['name']) ?></td>
+                <td>रु <?= number_format($item['price'], 2) ?></td>
+                <td><?= $item['quantity'] ?></td>
+                <td>रु <?= number_format($item['subtotal'], 2) ?></td>
+                <td><a href="cart.php?remove=<?= $item['id'] ?>" class="button">Remove</a></td>
+            </tr>
         <?php endforeach; ?>
-        <tr><td colspan="3"><strong>Total</strong></td><td colspan="2"><strong>रु <?= number_format($total,2) ?></strong></td></tr>
+        <tr>
+            <td colspan="3"><strong>Total</strong></td>
+            <td colspan="2"><strong>रु <?= number_format($total, 2) ?></strong></td>
+        </tr>
     </table>
-    <a href="checkout.php" class="button button-large">Checkout</a>
+    <div class="cart-actions">
+        <div class="cart-left">
+            <a href="menu.php" class="button button-secondary">Continue Shopping</a>
+            <a href="cart.php?clear=1" class="button button-danger"
+                onclick="return confirm('Clear all items from cart?');">Clear Cart</a>
+        </div>
+        <a href="checkout.php" class="button button-large">Proceed to Checkout</a>
+    </div>
+    <!-- Sticky checkout button for mobile -->
+    <a href="checkout.php" class="button sticky-checkout">Checkout</a>
 <?php endif; ?>
 <?php include '../includes/footer.php'; ?>
