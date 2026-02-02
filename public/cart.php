@@ -41,7 +41,12 @@ if ($cart) {
 ?>
 <h2>Your Cart</h2>
 <?php if (!$items): ?>
-    <p>Your cart is empty.</p>
+    <div class="empty-cart">
+        <div class="empty-cart-icon">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added anything yet. Explore our delicious menu!</p>
+        <a href="menu.php" class="button button-large">Continue Shopping</a>
+    </div>
 <?php else: ?>
     <table class="table">
         <tr><th>Name</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>
@@ -56,6 +61,6 @@ if ($cart) {
         <?php endforeach; ?>
         <tr><td colspan="3"><strong>Total</strong></td><td colspan="2"><strong>रु <?= number_format($total,2) ?></strong></td></tr>
     </table>
-    <a href="checkout.php" class="button">Checkout</a>
+    <a href="checkout.php" class="button button-large">Checkout</a>
 <?php endif; ?>
 <?php include '../includes/footer.php'; ?>

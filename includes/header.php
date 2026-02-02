@@ -13,10 +13,12 @@
         <h1>Patio Café Management System</h1>
         <nav>
             <a href="menu.php">Menu</a>
-            <a href="cart.php">Cart</a>
-            <?php if (!empty($_SESSION['admin_logged_in'])): ?>
+            <?php if (empty($_SESSION['admin_logged_in'])): ?>
+                <a href="cart.php">Cart</a>
+            <?php else: ?>
                 | <a href="index.php">Admin Home</a>
                 | <a href="add.php">Add Item</a>
+                | <a href="orders.php">Orders</a>
                 | <a href="search.php">Search</a>
                 | <a href="categories.php">Categories</a>
                 | <a href="logout.php">Logout</a>
