@@ -25,9 +25,9 @@ foreach ($items as $item) {
         <?php foreach ($catItems as $item): ?>
             <div class="menu-item">
                 <?php if ($item['image']): ?>
-                    <img src="/final-ass/assets/img/<?= sanitize($item['image']) ?>" alt="<?= sanitize($item['name']) ?>">
+                    <img src="../assets/img/<?= sanitize($item['image']) ?>" alt="<?= sanitize($item['name']) ?>">
                 <?php else: ?>
-                    <img src="/final-ass/assets/img/placeholder.jpg" alt="No image">
+                    <img src="../assets/img/placeholder.jpg" alt="No image">
                 <?php endif; ?>
                 <strong><?= sanitize($item['name']) ?></strong>
                 <div class="price">रु <?= number_format($item['price'], 2) ?></div>

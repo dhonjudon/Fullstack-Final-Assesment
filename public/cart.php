@@ -24,6 +24,25 @@ if (isset($_GET['add'])) {
     header('Location: cart.php');
     exit;
 }
+if (isset($_GET['increase'])) {
+    $id = intval($_GET['increase']);
+    if (isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id]++;
+    }
+    header('Location: cart.php');
+    exit;
+}
+if (isset($_GET['decrease'])) {
+    $id = intval($_GET['decrease']);
+    if (isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id]--;
+        if ($_SESSION['cart'][$id] <= 0) {
+            unset($_SESSION['cart'][$id]);
+        }
+    }
+    header('Location: cart.php');
+    exit;
+}
 if (isset($_GET['remove'])) {
     $id = intval($_GET['remove']);
     unset($_SESSION['cart'][$id]);
@@ -36,13 +55,28 @@ $cart = $_SESSION['cart'];
 $items = [];
 $total = 0;
 if ($cart) {
-    $ids = implode(',', array_map('intval', array_keys($cart)));
-    $stmt = $pdo->query("SELECT * FROM menu_items WHERE id IN ($ids)");
-    $items = $stmt->fetchAll();
-    foreach ($items as &$item) {
-        $item['quantity'] = $cart[$item['id']];
-        $item['subtotal'] = $item['quantity'] * $item['price'];
-        $total += $item['subtotal'];
+    // Remove any empty or zero quantity items
+    $cart = array_filter($cart, function ($qty) {
+        return $qty > 0;
+    });
+    $_SESSION['cart'] = $cart;
+
+    if (!empty($cart)) {
+        $ids = implode(',', array_map('intval', array_keys($cart)));
+        $stmt = $pdo->query("SELECT DISTINCT * FROM menu_items WHERE id IN ($ids)");
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Ensure items are keyed by ID to prevent duplicates
+        $uniqueItems = [];
+        foreach ($items as $item) {
+            if (!isset($uniqueItems[$item['id']])) {
+                $item['quantity'] = $cart[$item['id']];
+                $item['subtotal'] = $item['quantity'] * $item['price'];
+                $total += $item['subtotal'];
+                $uniqueItems[$item['id']] = $item;
+            }
+        }
+        $items = array_values($uniqueItems);
     }
 }
 ?>
@@ -67,7 +101,13 @@ if ($cart) {
             <tr>
                 <td><?= sanitize($item['name']) ?></td>
                 <td>रु <?= number_format($item['price'], 2) ?></td>
-                <td><?= $item['quantity'] ?></td>
+                <td>
+                    <div class="quantity-controls">
+                        <a href="cart.php?decrease=<?= $item['id'] ?>" class="qty-btn">-</a>
+                        <span class="qty-value"><?= $item['quantity'] ?></span>
+                        <a href="cart.php?increase=<?= $item['id'] ?>" class="qty-btn">+</a>
+                    </div>
+                </td>
                 <td>रु <?= number_format($item['subtotal'], 2) ?></td>
                 <td><a href="cart.php?remove=<?= $item['id'] ?>" class="button">Remove</a></td>
             </tr>

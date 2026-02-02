@@ -50,9 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="success-icon">✓</div>
         <h3>Order Placed Successfully!</h3>
         <p>Thank you for your order. Your order has been received and is being prepared.</p>
-        <div class="success-actions">
-            <a href="menu.php" class="button button-large">Order More</a>
-            <a href="menu.php" class="button button-secondary">Back to Menu</a>
+        <div class="button-group">
+            <a href="menu.php" class="button button-large">Back to Menu</a>
         </div>
     </div>
 <?php else: ?>

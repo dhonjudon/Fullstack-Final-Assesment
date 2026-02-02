@@ -1,6 +1,6 @@
 </main>
 <footer>
-    <p>&copy; 2026 Patio Café. All rights reserved.</p>
+    <p>&copy; 2026 Tushar Dhonju. All rights reserved.</p>
 </footer>
 
 <!-- Delete Confirmation Modal -->
@@ -22,8 +22,8 @@
     </div>
 </div>
 
-<script src="/final-ass/assets/js/main.js"></script>
-<script src="/final-ass/assets/js/modal.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/modal.js"></script>
 </body>
 
 </html>
