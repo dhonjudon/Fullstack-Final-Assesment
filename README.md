@@ -12,6 +12,12 @@ A full-stack PHP web application for café menu management, ordering, and revenu
 | **Admin Login**     | [Login Page](https://student.heraldcollege.edu.np/~np03cs4a240155/final-asessment/public/login.php) |
 | **Admin Dashboard** | [Dashboard](https://student.heraldcollege.edu.np/~np03cs4a240155/final-asessment/public/index.php)  |
 
+### 🔑 Admin Credentials
+
+| Username     | Password    |
+| ------------ | ----------- |
+| `root_admin` | `123456789` |
+
 </div>
 
 ---
@@ -100,12 +106,8 @@ Built as a final assessment project, this system demonstrates full-stack web dev
 2. **Import the database** using phpMyAdmin or MySQL CLI:
 
    ```sql
-   -- Import in this order:
-   1. patio_db.sql        -- Main database and menu items
-   2. admins.sql          -- Admin users table
-   3. categories.sql      -- Categories table
-   4. orders.sql          -- Orders table
-   5. revenue_tracking.sql -- Revenue tracking
+   -- Import the complete database file:
+   np03cs4a240155.sql
    ```
 
 3. **Configure database connection** in `config/db.php`:
