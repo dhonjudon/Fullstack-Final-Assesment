@@ -89,7 +89,7 @@ if ($cart) {
         <a href="menu.php" class="button button-large">Continue Shopping</a>
     </div>
 <?php else: ?>
-    <table class="table">
+    <table class="table cart-table">
         <tr>
             <th>Name</th>
             <th>Price</th>
@@ -124,8 +124,6 @@ if ($cart) {
         </div>
         <a href="checkout.php" class="button button-large">Proceed to Checkout</a>
     </div>
-    <!-- Sticky checkout button for mobile -->
-    <a href="checkout.php" class="button sticky-checkout">Checkout</a>
 
     <!-- Clear Cart Confirmation Modal -->
     <div id="clearCartModal" class="modal">
