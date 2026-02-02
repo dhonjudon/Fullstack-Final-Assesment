@@ -1,7 +1,6 @@
 <?php
-// Call session_start() and check admin login
-session_start();
+// Check admin login (session_start() is called in the page that includes this)
 if (empty($_SESSION['admin_logged_in'])) {
-    header('Location: login.php');
+    header('Location: _admin_login.php');
     exit;
 }

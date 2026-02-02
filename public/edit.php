@@ -1,8 +1,12 @@
 <?php
+// edit.php: Edit menu item
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 require_once '../includes/functions.php';
-include '../includes/header.php';
 require_once '../includes/auth.php';
+include '../includes/header.php';
 
 $id = intval($_GET['id'] ?? 0);
 if (!$id) {

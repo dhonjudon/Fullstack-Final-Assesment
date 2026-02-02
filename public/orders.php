@@ -1,6 +1,8 @@
 <?php
 // orders.php: Admin orders management and revenue tracking
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 require_once '../includes/functions.php';
 require_once '../includes/auth.php';

@@ -1,4 +1,8 @@
 <?php
+// delete.php: Delete menu item
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 require_once '../includes/functions.php';
 require_once '../includes/auth.php';

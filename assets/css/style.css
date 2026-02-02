@@ -426,3 +426,133 @@ form input[type="checkbox"] + label {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: #fffaf5;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(93, 64, 55, 0.3);
+  width: 90%;
+  max-width: 450px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  background: #5d4037;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  color: #5d4037;
+}
+
+.modal-body p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e0d5c8;
+}
+
+.button-secondary {
+  background: #e0d5c8;
+  color: #5d4037;
+}
+
+.button-secondary:hover {
+  background: #d4a574;
+  color: #fff;
+}
+
+.button-danger {
+  background: #d32f2f;
+  color: #fff;
+}
+
+.button-danger:hover {
+  background: #b71c1c;
+}
+
+@media (max-width: 500px) {
+  .modal-content {
+    width: 95%;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+  }
+
+  .modal-footer .button {
+    width: 100%;
+  }
+}

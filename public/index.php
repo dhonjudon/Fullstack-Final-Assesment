@@ -1,4 +1,8 @@
 <?php
+// index.php: Admin dashboard
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 require_once '../includes/functions.php';
 require_once '../includes/auth.php';
@@ -33,8 +37,7 @@ $items = $stmt->fetchAll();
                 </td>
                 <td>
                     <a href="edit.php?id=<?= $item['id'] ?>" class="button">Edit</a>
-                    <a href="delete.php?id=<?= $item['id'] ?>" class="button"
-                        onclick="return confirm('Delete this item?');">Delete</a>
+                    <a href="#" class="button button-danger" onclick="openDeleteModal(<?= $item['id'] ?>, '<?= htmlspecialchars(sanitize($item['name'])) ?>'); return false;">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>
