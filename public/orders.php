@@ -6,26 +6,22 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../config/db.php';
 require_once '../includes/functions.php';
 require_once '../includes/auth.php';
-include '../includes/header.php';
 
-// Handle status update
-if (isset($_GET['update_status'])) {
-    $order_id = intval($_GET['update_status']);
-    $new_status = isset($_GET['status']) ? sanitize($_GET['status']) : 'pending';
-
-    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
-    $stmt->execute([$new_status, $order_id]);
-    header('Location: orders.php');
-    exit;
-}
-
-// Handle daily reset
+// Handle daily reset - BEFORE any HTML output
 if (isset($_GET['reset_daily']) && $_GET['reset_daily'] === 'confirm') {
     try {
         $pdo->beginTransaction();
 
         // Calculate today's totals
-        $today_stats = $pdo->query("SELECT COUNT(*) as orders, SUM(total) as revenue FROM orders")->fetch();
+        $today_stats = $pdo->query("SELECT COUNT(*) as orders, COALESCE(SUM(total), 0) as revenue FROM orders")->fetch();
+
+        // Only proceed if there are orders to reset
+        if ($today_stats['orders'] == 0) {
+            $pdo->rollBack();
+            $_SESSION['reset_error'] = "No orders to reset.";
+            header('Location: orders.php');
+            exit;
+        }
 
         // Archive all orders to archived_orders
         $orders_to_archive = $pdo->query("SELECT * FROM orders")->fetchAll();
@@ -82,7 +78,7 @@ if (isset($_GET['reset_daily']) && $_GET['reset_daily'] === 'confirm') {
     exit;
 }
 
-// Handle status update
+// Handle status update - BEFORE any HTML output
 if (isset($_GET['update_status'])) {
     $order_id = intval($_GET['update_status']);
     $new_status = isset($_GET['status']) ? sanitize($_GET['status']) : 'pending';
@@ -92,6 +88,9 @@ if (isset($_GET['update_status'])) {
     header('Location: orders.php');
     exit;
 }
+
+// Now include header (HTML output starts here)
+include '../includes/header.php';
 
 // Get summary statistics
 $total_revenue = $pdo->query("SELECT SUM(total) as revenue FROM orders")->fetch()['revenue'] ?? 0;
