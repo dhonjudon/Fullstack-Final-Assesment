@@ -48,7 +48,7 @@ $items = $stmt->fetchAll();
                 <tr>
                     <td><?= sanitize($item['name']) ?></td>
                     <td><?= sanitize($item['category']) ?></td>
-                    <td>$<?= number_format($item['price'], 2) ?></td>
+                    <td>रु <?= number_format($item['price'], 2) ?></td>
                     <td><?= sanitize($item['description']) ?></td>
                     <td class="<?= $item['availability'] ? 'availability-yes' : 'availability-no' ?>">
                         <?= $item['availability'] ? 'Yes' : 'No' ?>

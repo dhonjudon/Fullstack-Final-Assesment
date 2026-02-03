@@ -16,11 +16,12 @@ $items = [];
 $total = 0;
 $ids = implode(',', array_map('intval', array_keys($cart)));
 $stmt = $pdo->query("SELECT * FROM menu_items WHERE id IN ($ids)");
-$items = $stmt->fetchAll();
-foreach ($items as &$item) {
+$dbItems = $stmt->fetchAll();
+foreach ($dbItems as $item) {
     $item['quantity'] = $cart[$item['id']];
     $item['subtotal'] = $item['quantity'] * $item['price'];
     $total += $item['subtotal'];
+    $items[] = $item;
 }
 
 $success = false;
