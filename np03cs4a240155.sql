@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2026 at 12:46 PM
+-- Generation Time: Feb 03, 2026 at 11:56 AM
 -- Server version: 10.11.15-MariaDB
 -- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";git
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -72,7 +72,7 @@ INSERT INTO `archived_orders` (`id`, `original_order_id`, `customer_name`, `cust
 (8, 8, 'Devil mate', '11111', 1875.00, 'done', '2026-02-02 07:21:23', '2026-02-02 07:24:01'),
 (9, 9, 'rado', '', 560.00, 'done', '2026-02-02 07:31:37', '2026-02-02 07:33:03'),
 (10, 10, 'Bishal', '1111', 1009706.00, 'done', '2026-02-02 07:39:19', '2026-02-02 07:41:45'),
-(11, 11, 'rado', 'rado', 7050.00, 'done', '2026-02-02 07:39:25', '2026-02-02 07:41:45'),
+(11, 11, 'wow', 'no', 7050.00, 'done', '2026-02-03 11:32:57', '2026-02-02 07:41:45'),
 (12, 12, 'Bishal1', '1111', 277775.00, 'done', '2026-02-02 07:40:27', '2026-02-02 07:41:45'),
 (13, 13, 'Bishal1', '1111', 102193.00, 'done', '2026-02-02 07:40:53', '2026-02-02 07:41:45'),
 (14, 14, 'Bishal1', '1111', 1155.00, 'done', '2026-02-02 08:15:38', '2026-02-02 08:40:39'),
@@ -80,10 +80,28 @@ INSERT INTO `archived_orders` (`id`, `original_order_id`, `customer_name`, `cust
 (16, 16, '13zx22', '32213', 26705.00, 'done', '2026-02-02 08:17:16', '2026-02-02 08:40:39'),
 (17, 17, 'Kreel', '11111', 35380.00, 'done', '2026-02-02 08:17:53', '2026-02-02 08:40:39'),
 (18, 18, 'Bishal1', '1111', 54145.00, 'done', '2026-02-02 08:22:03', '2026-02-02 08:40:39'),
-(19, 19, 'supriya khadka', '9861365861', 215.00, 'done', '2026-02-02 08:41:29', '2026-02-02 09:43:26'),
-(20, 20, 'baby', '584843', 940.00, 'done', '2026-02-02 09:48:46', '2026-02-02 10:14:27'),
+(19, 19, 'test', NULL, 215.00, 'done', '2026-02-03 11:32:44', '2026-02-02 09:43:26'),
+(20, 20, 'ez', '584843', 940.00, 'done', '2026-02-03 11:32:48', '2026-02-02 10:14:27'),
 (21, 21, 'Tushar', '', 150.00, 'done', '2026-02-02 11:19:37', '2026-02-02 11:20:03'),
-(22, 22, 'Tushar', '4616651', 150.00, 'done', '2026-02-02 11:29:34', '2026-02-02 11:34:17');
+(22, 22, 'Tushar', '4616651', 150.00, 'done', '2026-02-02 11:29:34', '2026-02-02 11:34:17'),
+(23, 23, 'adam', '', 190.00, 'done', '2026-02-02 11:46:22', '2026-02-02 12:58:16'),
+(24, 24, 'Tushar', '', 150.00, 'done', '2026-02-02 12:09:25', '2026-02-02 12:58:16'),
+(25, 25, 'tushar', '', 340.00, 'done', '2026-02-02 12:49:18', '2026-02-02 12:58:16'),
+(26, 26, 'PRAJWAL', '', 455.00, 'done', '2026-02-02 12:54:35', '2026-02-02 12:58:16'),
+(27, 27, 'Tushar', '', 340.00, 'done', '2026-02-02 13:11:08', '2026-02-03 11:16:06'),
+(28, 28, 'Tushar Dhonju', '', 310.00, 'done', '2026-02-02 13:14:43', '2026-02-03 11:16:06'),
+(29, 29, 'Bishal1', '', 1450.00, 'pending', '2026-02-03 08:21:40', '2026-02-03 11:16:06'),
+(30, 30, 'Bishal1', '1111', 305.00, 'pending', '2026-02-03 08:38:43', '2026-02-03 11:16:06'),
+(31, 31, 'Tushar', '', 300.00, 'done', '2026-02-03 09:11:51', '2026-02-03 11:16:06'),
+(32, 32, 'Tushar', '', 55.00, 'pending', '2026-02-03 11:15:40', '2026-02-03 11:16:06'),
+(33, 33, 'Tushar', '', 150.00, 'pending', '2026-02-03 11:29:37', '2026-02-03 11:45:28'),
+(34, 34, 'Tushar', '', 150.00, 'done', '2026-02-03 11:33:25', '2026-02-03 11:45:28'),
+(35, 35, 'test', '', 150.00, 'pending', '2026-02-03 11:33:47', '2026-02-03 11:45:28'),
+(36, 1, 'Tushar', '', 150.00, 'pending', '2026-02-03 11:47:01', '2026-02-03 11:47:05'),
+(37, 1, 'Tushar', '', 150.00, 'pending', '2026-02-03 11:50:59', '2026-02-03 11:51:04'),
+(38, 1, 'Tushar', '', 150.00, 'pending', '2026-02-03 11:52:14', '2026-02-03 11:52:18'),
+(39, 2, 'test', '', 150.00, 'done', '2026-02-03 11:52:36', '2026-02-03 11:52:57'),
+(40, 3, 'Tushar Dhonju', '', 300.00, 'done', '2026-02-03 11:54:33', '2026-02-03 11:54:47');
 
 -- --------------------------------------------------------
 
@@ -161,7 +179,38 @@ INSERT INTO `archived_order_items` (`id`, `archived_order_id`, `menu_item_name`,
 (55, 20, 'Blueberry Muffin', 1, 250.00),
 (56, 20, 'Blueberry Muffin', 1, 250.00),
 (57, 21, 'Lemonade', 1, 150.00),
-(58, 22, 'Lemonade', 1, 150.00);
+(58, 22, 'Lemonade', 1, 150.00),
+(59, 23, 'Cappuccino', 1, 190.00),
+(60, 24, 'Lemonade', 1, 150.00),
+(61, 25, 'Cappuccino', 1, 190.00),
+(62, 25, 'Cappuccino', 1, 190.00),
+(63, 26, 'Blueberry Muffin', 1, 250.00),
+(64, 26, 'Lemonade', 1, 150.00),
+(65, 26, 'Lemonade', 1, 150.00),
+(66, 27, 'Cappuccino', 1, 190.00),
+(67, 27, 'Cappuccino', 1, 190.00),
+(68, 28, 'Chocolate Cake', 1, 160.00),
+(69, 28, 'Chocolate Cake', 1, 160.00),
+(70, 29, 'Espresso', 1, 195.00),
+(71, 29, 'Cappuccino', 1, 190.00),
+(72, 29, 'Iced Latte', 1, 150.00),
+(73, 29, 'Blueberry Muffin', 1, 250.00),
+(74, 29, 'Chocolate Cake', 1, 160.00),
+(75, 29, 'Lemonade', 3, 150.00),
+(76, 29, 'Lemonade', 3, 150.00),
+(77, 30, 'Blueberry Muffin', 1, 250.00),
+(78, 30, 'Blueberry Muffin', 1, 250.00),
+(79, 31, 'Lemonade', 2, 150.00),
+(80, 32, 'Chocolate Donut', 1, 55.00),
+(81, 33, 'Lemonade', 1, 150.00),
+(82, 34, 'Lemonade', 1, 150.00),
+(83, 35, 'Lemonade', 1, 150.00),
+(84, 36, 'Lemonade', 1, 150.00),
+(85, 37, 'Lemonade', 1, 150.00),
+(86, 38, 'Lemonade', 1, 150.00),
+(87, 39, 'Iced Latte', 1, 150.00),
+(88, 40, 'Iced Latte', 1, 150.00),
+(89, 40, 'Lemonade', 1, 150.00);
 
 -- --------------------------------------------------------
 
@@ -206,13 +255,13 @@ CREATE TABLE `menu_items` (
 --
 
 INSERT INTO `menu_items` (`id`, `name`, `category`, `price`, `description`, `availability`, `created_at`, `image`) VALUES
-(1, 'Espresso', 'Coffee', 200.00, 'Rich and bold espresso shot.', 1, '2026-01-30 08:36:28', '1770006630_1261.png'),
+(1, 'Espresso', 'Coffee', 195.00, 'Rich and bold espresso shot.', 1, '2026-01-30 08:36:28', '1770006630_1261.png'),
 (2, 'Cappuccino', 'Coffee', 190.00, 'Espresso with steamed milk and foam.', 1, '2026-01-30 08:36:28', '1770006801_5456.png'),
 (3, 'Iced Latte', 'Coffee', 150.00, 'Chilled espresso with milk.', 1, '2026-01-30 08:36:28', '1770006672_2507.png'),
 (4, 'Blueberry Muffin', 'Snacks', 250.00, 'Freshly baked muffin with blueberries.', 1, '2026-01-30 08:36:28', '1770006994_6197.jpg'),
 (5, 'Chocolate Cake', 'Desserts', 160.00, 'Moist chocolate cake slice.', 1, '2026-01-30 08:36:28', '1770007048_9529.jpg'),
 (6, 'Lemonade', 'Beverages', 150.00, 'Refreshing beverage made by mixing lemon juice, water, and sweetener', 1, '2026-01-30 08:36:28', '1770008014_4503.jpg'),
-(7, 'Chocolate Donut', 'Snacks', 55.00, 'Sourdough with smashed avocado.', 1, '2026-01-30 08:36:28', '1770008071_3255.jpg');
+(7, 'Chocolate Donut', 'Snacks', 55.00, 'A donut glazed with chocolate.', 1, '2026-01-30 08:36:28', '1770008071_3255.jpg');
 
 -- --------------------------------------------------------
 
@@ -229,14 +278,6 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `customer_name`, `customer_phone`, `total`, `status`, `created_at`) VALUES
-(23, 'adam', '', 190.00, 'pending', '2026-02-02 11:46:22'),
-(24, 'Tushar', '', 150.00, 'pending', '2026-02-02 12:09:25');
-
 -- --------------------------------------------------------
 
 --
@@ -250,14 +291,6 @@ CREATE TABLE `order_items` (
   `quantity` int(11) NOT NULL,
   `price` decimal(8,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `order_id`, `menu_item_id`, `quantity`, `price`) VALUES
-(59, 23, 2, 1, 190.00),
-(60, 24, 6, 1, 150.00);
 
 -- --------------------------------------------------------
 
@@ -293,7 +326,8 @@ CREATE TABLE `revenue_logs` (
 --
 
 INSERT INTO `revenue_logs` (`id`, `log_date`, `total_orders`, `total_revenue`, `created_at`) VALUES
-(1, '2026-02-02', 22, 16840.00, '2026-02-02 05:29:38');
+(1, '2026-02-02', 26, 17975.00, '2026-02-02 05:29:38'),
+(12, '2026-02-03', 14, 4110.00, '2026-02-03 11:16:06');
 
 --
 -- Indexes for dumped tables
@@ -373,37 +407,37 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `archived_orders`
 --
 ALTER TABLE `archived_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `archived_order_items`
 --
 ALTER TABLE `archived_order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `requests`
@@ -415,7 +449,7 @@ ALTER TABLE `requests`
 -- AUTO_INCREMENT for table `revenue_logs`
 --
 ALTER TABLE `revenue_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
